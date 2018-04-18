@@ -1,0 +1,41 @@
+body {
+  background-color: #34424f;
+}
+
+
+#game-board {
+  margin-left: 8%;
+}
+
+.logo {
+
+  width: 38%;
+  height: 287px;
+  background-color: white;
+  background-image: url("images/tardi.png");
+  margin-left: 32%;
+  margin-top: -10%;
+  background-color:#34424f;
+}
+
+#start {
+  background-color: #ff9900;
+  border-color: #ff9900;
+  color: #e1edea;
+  width: 300px;
+  height: 40px;
+  font-size: 30px;
+  border-radius: 25px;
+  margin-left: 22%;
+}
+
+#pause {
+  background-color: #00ffe1;
+  border-color: #00ffe1;
+  color: #e1edea;
+  width: 300px;
+  height: 40px;
+  font-size: 30px;
+  border-radius: 25px;
+  margin-left: 15%;
+}
