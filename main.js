@@ -10,11 +10,16 @@ var tierra = new Tierra();
 var marte = new Marte();
 var venus = new Venus();
 var neptuno = new Neptuno();
+var planets =[mercurio, tierra, marte, venus, neptuno]
 var bullets = [];
 var star = new Star1();
 var star2 = new Star2();
 var star3 = new Star3();
 var star4 = new Star4();
+var frames = 0;
+var numRandom = Math.floor(Math.random() * 13);
+var randomXx = Math.floor(Math.random() * 800 );
+var stars =[star,star2,star3,star4];
 
 function Board() {
   this.x = 0;
@@ -23,9 +28,11 @@ function Board() {
   this.height= canvas.height;
   this.img = new Image();
   this.img.src = "images/cosmos-universo-estrellas.jpg";
-  this.score = 0;
+  this.scorePlanets = 0;
+  this.scoreStars = 0;
+  this.time = 60;
   this.music = new Audio();
-  this.music.src = "http://66.90.93.122/ost/dueling-ages-the-sonic-time-twisted-original-soundtrack/esjerwoc/30%20-%20Enter%20Galacnik.mp3";
+  this.music.src = "tardigame.mp3";
 
   this.img.onload = function(){
     this.draw();
@@ -42,6 +49,24 @@ function Board() {
       ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
       ctx.drawImage(this.img,this.x + canvas.width ,this.y,this.width,this.height);
     }
+  
+  this.drawScorePlanets = function(){
+    ctx.font = "25px Avenir"
+    ctx.fillStyle = "yellow"
+    ctx.fillText("Planets: " + this.scorePlanets,900,560);
+  }
+  this.drawScoreStars = function(){
+    ctx.font = "25px Avenir"
+    ctx.fillStyle = "yellow"
+    ctx.fillText("Stars: " + this.scoreStars ,900,590);
+  }
+  this.drawTime = function(){
+     if(frames % 60 === 0 && this.time >= 1 ) this.time--;
+    ctx.font = "50px Avenir"
+    ctx.fillStyle = "yellow"
+    ctx.fillText(this.time,100,575);
+  }
+
   
 }
 
@@ -76,6 +101,9 @@ this.draw = function(){
   this.moveRight = function(){
     this.x += 10;
   }
+  this.isTouching = function(star){
+    return(this.x < star.x + star.width) && (this.x + this.width > star.x) && (this.y < star.y + star.height) && (this.y + this.height > star.y);
+  }
 }
 
 function Shoot(x,y){
@@ -91,7 +119,7 @@ function Shoot(x,y){
     }.bind(this);
   
     this.draw = function(){
-      if(this.move) this.x += 10;
+      if(this.move) this.x += 5;
       ctx.drawImage(this.img,this.x + 55,this.y + 5,this.width,this.height);
     }
     this.moveUp = function(){
@@ -106,6 +134,9 @@ function Shoot(x,y){
     this.moveRight = function(){
       this.x += 10;
     }
+  this.isTouching = function(planet){
+    return(this.x < planet.x + planet.width) && (this.x + this.width > planet.x) && (this.y < planet.y + planet.height) && (this.y + this.height > planet.y);
+  }
   
 }
 //function generateShoots(){
@@ -125,6 +156,7 @@ function Mercurio(){
   this.y = 200;
   this.width = 100;
   this.height = 100;
+  this.num = Math.floor(Math.random() * 6 + 3 );
   this.img = new Image();
     this.img.src = "images/mercurio.png";
     this.img.onload = function(){
@@ -136,19 +168,34 @@ function Mercurio(){
   this.draw = function(){
     this.move();
     ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
+    ctx.font = "30px Avenir"
+    ctx.fillStyle = "white"
+    ctx.fillText(this.num,this.x + 40,this.y + 60);
     if(this.x < 0){
+      //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 500 )
+      var randomY = Math.floor(Math.random() * 450 )
       this.x = canvas.width + randomX;
       this.y = randomY;
+      
+    }
+    this.redraw = function(){
+      //random + algo
+      var randomX = Math.floor(Math.random() * 800 );
+      var randomY = Math.floor(Math.random() * 300 )
+      this.x = canvas.width + randomX;
+      this.y = randomY;
+      this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-}
+  }
+
 function Tierra(){
   this.x = canvas.width + widthRandom;
   this.y = 300;
   this.width = 100;
   this.height = 100;
+  this.num = Math.floor(Math.random() * 6 + 3 );
   this.img = new Image();
     this.img.src = "images/tierra.png";
     this.img.onload = function(){
@@ -160,19 +207,34 @@ function Tierra(){
   this.draw = function(){
     this.move();
     ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
+    ctx.font = "30px Avenir"
+    ctx.fillStyle = "white"
+    ctx.fillText(this.num,this.x + 40,this.y + 60);
     if(this.x < 0){
+      //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 190 )
+      var randomY = Math.floor(Math.random() * 500 )
       this.x = canvas.width + randomX;
-      this.y = randomY;  
+      this.y = randomY;
+      
+    }
+    this.redraw = function(){
+      //random + algo
+      var randomX = Math.floor(Math.random() * 800 );
+      var randomY = Math.floor(Math.random() * 300 )
+      this.x = canvas.width + randomX;
+      this.y = randomY;
+      this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-}
+  }
+
 function Marte(){
   this.x = canvas.width + widthRandom;
   this.y = 100;
   this.width = 100;
   this.height = 100;
+  this.num = Math.floor(Math.random() * 6 + 3 );
   this.img = new Image();
     this.img.src = "images/marte.png";
     this.img.onload = function(){
@@ -184,20 +246,34 @@ function Marte(){
   this.draw = function(){
     this.move();
     ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
+    ctx.font = "30px Avenir"
+    ctx.fillStyle = "white"
+    ctx.fillText(this.num,this.x + 40,this.y + 60);
     if(this.x < 0){
+      //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 450 )
+      var randomY = Math.floor(Math.random() * 380 )
       this.x = canvas.width + randomX;
       this.y = randomY;
       
     }
+    this.redraw = function(){
+      //random + algo
+      var randomX = Math.floor(Math.random() * 800 );
+      var randomY = Math.floor(Math.random() * 300 )
+      this.x = canvas.width + randomX;
+      this.y = randomY;
+      this.num = Math.floor(Math.random() * 6 + 3 );
+    }
   }
-}
+  }
+
 function Venus(){
   this.x = canvas.width + 20;
   this.y = 400;
   this.width = 100;
   this.height = 100;
+  this.num = Math.floor(Math.random() * 6 + 3 );
   this.img = new Image();
     this.img.src = "images/venus.png";
     this.img.onload = function(){
@@ -209,20 +285,34 @@ function Venus(){
   this.draw = function(){
     this.move();
     ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
+    ctx.font = "30px Avenir"
+    ctx.fillStyle = "white"
+    ctx.fillText(this.num,this.x + 40,this.y + 60);
     if(this.x < 0){
+      //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 450 )
+      var randomY = Math.floor(Math.random() * 500 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-
+      
+    }
+    this.redraw = function(){
+      //random + algo
+      var randomX = Math.floor(Math.random() * 800 );
+      var randomY = Math.floor(Math.random() * 300 )
+      this.x = canvas.width + randomX;
+      this.y = randomY;
+      this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-}
+  }
+
 function Neptuno(){
   this.x = canvas.width + 1;
   this.y = 500;
   this.width = 100;
   this.height = 100;
+  this.num = Math.floor(Math.random() * 6 + 3 );
   this.img = new Image();
     this.img.src = "images/neptuno.png";
     this.img.onload = function(){
@@ -234,16 +324,34 @@ function Neptuno(){
   this.draw = function(){
     this.move();
     ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
+    ctx.font = "30px Avenir"
+    ctx.fillStyle = "white"
+    ctx.fillText(this.num,this.x + 40,this.y + 60);
     if(this.x < 0){
+      //random + algo
+      var randomX = Math.floor(Math.random() * 800 );
+      var randomY = Math.floor(Math.random() * 600 )
+      this.x = canvas.width + randomX;
+      this.y = randomY;
+      
+    }
+    
+  this.redraw = function(){
       //random + algo
       var randomX = Math.floor(Math.random() * 800 );
       var randomY = Math.floor(Math.random() * 300 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
-    }
+      this.num = Math.floor(Math.random() * 6 + 3 );
+    } 
   }
 }
+
+
+
+
+
+
 function Star1(){
   this.x = canvas.width + 1;
   this.y = 400;
@@ -263,11 +371,19 @@ function Star1(){
     if(this.x < 0){
       //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 300 )
+      var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
       
     }
+    
+
+  }
+  this.redraw = function(){
+    var randomX = Math.floor(Math.random() * 800 );
+    var randomY = Math.floor(Math.random() * 600 )
+    this.x = canvas.width + randomX;
+    this.y = randomY;
   }
 }
 function Star2(){
@@ -289,11 +405,19 @@ function Star2(){
     if(this.x < 0){
       //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 300 )
+      var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
       
     }
+    
+
+  }
+  this.redraw = function(){
+    var randomX = Math.floor(Math.random() * 800 );
+    var randomY = Math.floor(Math.random() * 600 )
+    this.x = canvas.width + randomX;
+    this.y = randomY;
   }
 }
 
@@ -316,11 +440,19 @@ function Star3(){
     if(this.x < 0){
       //random + algo
       var randomX = Math.floor(Math.random() * 800 );
-      var randomY = Math.floor(Math.random() * 500 )
+      var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
       
     }
+    
+
+  }
+  this.redraw = function(){
+    var randomX = Math.floor(Math.random() * 800 );
+    var randomY = Math.floor(Math.random() * 600 )
+    this.x = canvas.width + randomX;
+    this.y = randomY;
   }
 }
 function Star4(){
@@ -347,28 +479,35 @@ function Star4(){
       this.y = randomY;
       
     }
+    
+
+  }
+  this.redraw = function(){
+    var randomX = Math.floor(Math.random() * 800 );
+    var randomY = Math.floor(Math.random() * 600 )
+    this.x = canvas.width + randomX;
+    this.y = randomY;
   }
 }
 
 
 function generatePlanets(){
+planets.forEach((planet)=>{
+  planet.draw()
+})
 
-  mercurio.draw();
-  tierra.draw();
-  marte.draw();
-  venus.draw();
-  neptuno.draw();
-  star.draw();
-  star2.draw();
-  star3.draw();
-  star4.draw();
-  
+stars.forEach((star)=>{
+  star.draw()
+})
+   
 }
 
 
 
 
 function start(){
+
+  board.music.play();
 
   if( intervalo > 0 ) return;
   
@@ -383,11 +522,34 @@ function start(){
 function update(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   board.draw();
+  frames ++;
   generatePlanets();
-  bullets.forEach((bullet) => {
+  bullets.forEach((bullet, indexB) => {
     bullet.draw();
+    console.log(planets)
+    planets.forEach((planet, indexP) => {
+      if(bullet.isTouching(planet)){
+        bullets.splice(indexB,1);
+        console.log("collision")
+        planets[indexP].num--;
+        if (planets[indexP].num<=0){
+          planets[indexP].redraw();
+          board.scorePlanets+=1;
+        }
+      }
+    })
     bullet.move = true;
   });
+  stars.forEach((star,index) =>{
+    if(tardi.isTouching(star,1)){
+      console.log("estoy tocando una estrella");
+      stars[index].redraw();
+      board.scoreStars+=1;
+    }
+  })
+  board.drawScorePlanets();
+  board.drawScoreStars();
+  board.drawTime();
   tardi.draw();
   
   
@@ -408,7 +570,7 @@ addEventListener("keydown",function(e){
     shoot.moveUp();
   }
 
-  if(e.keyCode === 40 && tardi.y < 620 ){
+  if(e.keyCode === 40 && tardi.y < 550 ){
     tardi.moveDown();
     shoot.moveDown();
   }
