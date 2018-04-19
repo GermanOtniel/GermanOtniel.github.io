@@ -591,6 +591,7 @@ document.getElementById("pause").addEventListener("click", reload);
 
 
 addEventListener("keydown",function(e){
+ 
   if(e.keyCode === 13){
     console.log("el enter si sirve");
       start();
@@ -602,18 +603,22 @@ addEventListener("keydown",function(e){
     }
   }
 if(e.keyCode === 38 && tardi.y > 9.9999 ){
+  e.preventDefault();
     tardi.moveUp();
     shoot.moveUp();
   }
 if(e.keyCode === 40 && tardi.y < 550 ){
+  e.preventDefault();
     tardi.moveDown();
     shoot.moveDown();
   }
 if(e.keyCode === 37 && tardi.x > 0 ){
+  e.preventDefault();
     tardi.moveLeft();
     shoot.moveLeft();
   }
 if(e.keyCode === 39 && tardi.x < 300){
+  e.preventDefault();
     tardi.moveRight();
     shoot.moveRight();
   }
