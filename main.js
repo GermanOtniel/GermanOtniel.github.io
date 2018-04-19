@@ -45,7 +45,7 @@ function Board() {
   this.height= canvas.height;
   this.img = new Image();
   this.img.src = "images/cosmos-universo-estrellas.jpg";
-  this.time = 60;
+  this.time = 40;
   this.time2 = 60;
   this.music = new Audio();
   this.music.src = "tardigame.mp3";
@@ -677,7 +677,7 @@ function start2(){
   start();
   tardi.y = 350;
   bullets = [];
-  board.time = 60;
+  board.time = 40;
   }
 function reStart(){
     start2();
