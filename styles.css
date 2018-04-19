@@ -48,3 +48,20 @@ canvas {
   border-radius: 35px;
 }
 
+h1 {
+    margin-left: -22%;
+    margin-top: 16%;
+    font-size: 15px;
+    color: yellow;
+    position: absolute;
+    font-family: "Press Start 2P";
+}
+h2 {
+  margin-left: 43%;
+  margin-top: 16%;
+  font-size: 15px;
+  color: yellow;
+  position: absolute;
+  font-family: "Press Start 2P";
+}
+
