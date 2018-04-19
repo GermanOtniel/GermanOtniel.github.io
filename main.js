@@ -20,6 +20,7 @@ var frames = 0;
 var numRandom = Math.floor(Math.random() * 13);
 var randomXx = Math.floor(Math.random() * 800 );
 var stars =[star,star2,star3,star4];
+var music2 = board.music;
 
 function Board() {
   this.x = 0;
@@ -64,7 +65,7 @@ function Board() {
      if(frames % 60 === 0 && this.time >= 1 ) this.time--;
     ctx.font = "50px Avenir"
     ctx.fillStyle = "yellow"
-    ctx.fillText(this.time,100,575);
+    ctx.fillText(this.time,1100,585);
   }
 
   
@@ -123,10 +124,10 @@ function Shoot(x,y){
       ctx.drawImage(this.img,this.x + 55,this.y + 5,this.width,this.height);
     }
     this.moveUp = function(){
-      if(!this.move) this.y -= 20; 
+       this.y -= 20; 
     }
     this.moveDown = function(){
-      if(!this.move) this.y += 20;
+      this.y += 20;
     }
     this.moveLeft = function(){
       this.x -= 10;
@@ -514,8 +515,13 @@ function start(){
   intervalo = setInterval(function(){
     update();
   },1000 / 60 ); 
-  
 
+  tardi.y = 350;
+  board.scorePlanets = 0;
+  board.scoreStars = 0;
+  
+  bullets = [];
+  music2.play();
 
 }
 
@@ -551,9 +557,20 @@ function update(){
   board.drawScoreStars();
   board.drawTime();
   tardi.draw();
-  
-  
+  TimeAgotado();
 }
+function pause(){
+  clearInterval(intervalo);
+  intervalo = 0;
+  board.music.pause();
+  
+  }
+
+
+document.getElementById("start").addEventListener("click", start);
+document.getElementById("pause").addEventListener("click", pause);
+
+
 
 addEventListener("keydown",function(e){
   if(e.keyCode === 13){
@@ -562,7 +579,7 @@ addEventListener("keydown",function(e){
   }
   
   if(e.keyCode === 82 ){
-    start();
+    reStart();
   }
 
   if(e.keyCode === 38 && tardi.y > 9.9999 ){
@@ -588,4 +605,30 @@ addEventListener("keydown",function(e){
     createShoots();
     
    }
+   if(e.keyCode === 16 ){
+     pause();
+   }
 })
+
+
+function notificacion(){
+  ctx.font = "60px 'Press Start 2P'";
+  ctx.fillStyle = "yellow";
+  ctx.fillText("Tiempo Agotado", 200, 200 );
+  ctx.font = "45px 'Press Start 2P'";
+  ctx.fillText("Jugador Dos, ¡es tu turno!",20,300 );
+  ctx.font = "30px 'Press Start 2P'";
+  ctx.fillText("Presiona 'R' para comenzar",220,400 );
+}
+
+function TimeAgotado(){
+  if(board.time === 0 ) {
+    notificacion();
+    pause();
+    
+  }
+}
+
+function reStart(){
+start();
+}
