@@ -21,17 +21,32 @@ var numRandom = Math.floor(Math.random() * 13);
 var randomXx = Math.floor(Math.random() * 800 );
 var stars =[star,star2,star3,star4];
 var music2 = board.music;
+var pantalla1 = new PantallaInicial();
+var scorePlanets;
+var scoreStars;
+var started = false;
+var allowR = false; 
+var scorePlanetsDos;
+var scoreStarsDos;
+var playerTwo = false;
+var final = false;
+var resultado = false;
+
 
 function Board() {
+  scorePlanets = 0;
+  scoreStars = 0;
+  scorePlanetsDos = 0;
+  scoreStarsDos = 0;
+  
   this.x = 0;
   this.y = 0;
   this.width= canvas.width;
   this.height= canvas.height;
   this.img = new Image();
   this.img.src = "images/cosmos-universo-estrellas.jpg";
-  this.scorePlanets = 0;
-  this.scoreStars = 0;
   this.time = 60;
+  this.time2 = 60;
   this.music = new Audio();
   this.music.src = "tardigame.mp3";
 
@@ -43,34 +58,65 @@ function Board() {
       this.x -= 3;
       if (this.x < -canvas.width) this.x = 0;
     }
-
-
   this.draw = function(){
       this.move();
       ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
       ctx.drawImage(this.img,this.x + canvas.width ,this.y,this.width,this.height);
     }
-  
   this.drawScorePlanets = function(){
+    ctx.font = "15px 'Press Start 2P'"
+    ctx.fillStyle = "yellow"
+    ctx.fillText("Player 1:",1000,530);
     ctx.font = "25px Avenir"
     ctx.fillStyle = "yellow"
-    ctx.fillText("Planets: " + this.scorePlanets,900,560);
+    ctx.fillText("Planets: " + scorePlanets,1000,560);
   }
   this.drawScoreStars = function(){
     ctx.font = "25px Avenir"
     ctx.fillStyle = "yellow"
-    ctx.fillText("Stars: " + this.scoreStars ,900,590);
+    ctx.fillText("Stars: " + scoreStars ,1000,590);
   }
   this.drawTime = function(){
      if(frames % 60 === 0 && this.time >= 1 ) this.time--;
     ctx.font = "50px Avenir"
     ctx.fillStyle = "yellow"
-    ctx.fillText(this.time,1100,585);
+    ctx.fillText(this.time,560,585);
   }
+  //SCORE PLAyer 2
 
-  
+  this.drawScorePlanets2 = function(){
+    ctx.font = "15px 'Press Start 2P'"
+    ctx.fillStyle = "yellow"
+    ctx.fillText("Player 2:",20,530);
+    ctx.font = "25px Avenir"
+    ctx.fillStyle = "yellow"
+    ctx.fillText("Planets: " + scorePlanetsDos ,20,560);
+  }
+  this.drawScoreStars2 = function(){
+    ctx.font = "25px Avenir"
+    ctx.fillStyle = "yellow"
+    ctx.fillText("Stars: " + scoreStarsDos ,20,590);
+  }
+  this.drawTime2 = function(){
+     if(frames % 60 === 0 && this.time2 >= 1 ) this.time2--;
+    ctx.font = "50px Avenir"
+    ctx.fillStyle = "yellow"
+    ctx.fillText(this.time2,250,585);
+  }
 }
-
+function PantallaInicial(){
+  this.x = 600;
+  this.y = 300;
+  this.cont = 3;
+  this.draw = function(){
+  if(frames % 60 === 0 && this.cont >= 1 ) this.cont--;
+  ctx.font = "30px 'Press Start 2P'"
+  ctx.fillStyle = "yellow"
+  ctx.fillText("Player 1: Are you ready?",this.x - 350,this.y);
+  ctx.font = "20px 'Press Start 2P'"
+  ctx.fillText(this.cont,this.x,this.y + 50);
+  }
+}
 function Tardigrado(){
 
   this.x = 40;
@@ -88,7 +134,6 @@ function Tardigrado(){
 this.draw = function(){
       ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
     }
-
   this.moveUp = function(){
     this.y -= 20; 
   }
@@ -106,7 +151,6 @@ this.draw = function(){
     return(this.x < star.x + star.width) && (this.x + this.width > star.x) && (this.y < star.y + star.height) && (this.y + this.height > star.y);
   }
 }
-
 function Shoot(x,y){
   this.x = x; 
   this.y = y;
@@ -138,20 +182,10 @@ function Shoot(x,y){
   this.isTouching = function(planet){
     return(this.x < planet.x + planet.width) && (this.x + this.width > planet.x) && (this.y < planet.y + planet.height) && (this.y + this.height > planet.y);
   }
-  
 }
-//function generateShoots(){
- // var shoot1 = shoot();
- // var shoot2 = shoot();
-  //arrayShoots.push(shoot1);
-  //arrayShoots.push(shoot2);
-//}
 function createShoots(){
   bullets.push(new Shoot(tardi.x,tardi.y));  
   }
-
-
-
 function Mercurio(){
   this.x = canvas.width + widthRandom;
   this.y = 200;
@@ -178,7 +212,6 @@ function Mercurio(){
       var randomY = Math.floor(Math.random() * 450 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
     this.redraw = function(){
       //random + algo
@@ -189,8 +222,7 @@ function Mercurio(){
       this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-  }
-
+}
 function Tierra(){
   this.x = canvas.width + widthRandom;
   this.y = 300;
@@ -217,7 +249,6 @@ function Tierra(){
       var randomY = Math.floor(Math.random() * 500 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
     this.redraw = function(){
       //random + algo
@@ -228,7 +259,7 @@ function Tierra(){
       this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-  }
+}
 
 function Marte(){
   this.x = canvas.width + widthRandom;
@@ -256,7 +287,6 @@ function Marte(){
       var randomY = Math.floor(Math.random() * 380 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
     this.redraw = function(){
       //random + algo
@@ -267,8 +297,7 @@ function Marte(){
       this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-  }
-
+}
 function Venus(){
   this.x = canvas.width + 20;
   this.y = 400;
@@ -295,7 +324,6 @@ function Venus(){
       var randomY = Math.floor(Math.random() * 500 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
     this.redraw = function(){
       //random + algo
@@ -306,8 +334,7 @@ function Venus(){
       this.num = Math.floor(Math.random() * 6 + 3 );
     }
   }
-  }
-
+}
 function Neptuno(){
   this.x = canvas.width + 1;
   this.y = 500;
@@ -334,9 +361,7 @@ function Neptuno(){
       var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
-    
   this.redraw = function(){
       //random + algo
       var randomX = Math.floor(Math.random() * 800 );
@@ -347,12 +372,6 @@ function Neptuno(){
     } 
   }
 }
-
-
-
-
-
-
 function Star1(){
   this.x = canvas.width + 1;
   this.y = 400;
@@ -375,10 +394,7 @@ function Star1(){
       var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
-    
-
   }
   this.redraw = function(){
     var randomX = Math.floor(Math.random() * 800 );
@@ -409,10 +425,7 @@ function Star2(){
       var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
     }
-    
-
   }
   this.redraw = function(){
     var randomX = Math.floor(Math.random() * 800 );
@@ -421,7 +434,6 @@ function Star2(){
     this.y = randomY;
   }
 }
-
 function Star3(){
   this.x = canvas.width + 1;
   this.y = 600;
@@ -438,7 +450,7 @@ function Star3(){
   this.draw = function(){
     this.move();
     ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
-    if(this.x < 0){
+    if(this.x < 0 ){
       //random + algo
       var randomX = Math.floor(Math.random() * 800 );
       var randomY = Math.floor(Math.random() * 600 )
@@ -446,8 +458,6 @@ function Star3(){
       this.y = randomY;
       
     }
-    
-
   }
   this.redraw = function(){
     var randomX = Math.floor(Math.random() * 800 );
@@ -478,11 +488,8 @@ function Star4(){
       var randomY = Math.floor(Math.random() * 600 )
       this.x = canvas.width + randomX;
       this.y = randomY;
-      
-    }
-    
-
   }
+}
   this.redraw = function(){
     var randomX = Math.floor(Math.random() * 800 );
     var randomY = Math.floor(Math.random() * 600 )
@@ -490,10 +497,8 @@ function Star4(){
     this.y = randomY;
   }
 }
-
-
 function generatePlanets(){
-planets.forEach((planet)=>{
+  planets.forEach((planet)=>{
   planet.draw()
 })
 
@@ -502,29 +507,19 @@ stars.forEach((star)=>{
 })
    
 }
-
-
-
-
 function start(){
-
+if (!started ){
   board.music.play();
-
-  if( intervalo > 0 ) return;
-  
+  started = true;
+   
   intervalo = setInterval(function(){
+    console.log("aun corro")
     update();
+    
+    
   },1000 / 60 ); 
-
-  tardi.y = 350;
-  board.scorePlanets = 0;
-  board.scoreStars = 0;
-  
-  bullets = [];
-  music2.play();
-
 }
-
+}
 function update(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   board.draw();
@@ -534,101 +529,156 @@ function update(){
     bullet.draw();
     console.log(planets)
     planets.forEach((planet, indexP) => {
-      if(bullet.isTouching(planet)){
+      if(bullet.isTouching(planet) && !playerTwo ){
         bullets.splice(indexB,1);
         console.log("collision")
         planets[indexP].num--;
-        if (planets[indexP].num<=0){
+        if (planets[indexP].num<=0 ){
           planets[indexP].redraw();
-          board.scorePlanets+=1;
+          scorePlanets+=1;
+          
+        }
+      }
+      if(bullet.isTouching(planet) && playerTwo ){
+        bullets.splice(indexB,1);
+        console.log("collision")
+        planets[indexP].num--;
+        if (planets[indexP].num<=0 && playerTwo ){
+          planets[indexP].redraw();
+          scorePlanetsDos+=1;
+          
         }
       }
     })
     bullet.move = true;
   });
   stars.forEach((star,index) =>{
-    if(tardi.isTouching(star,1)){
+    if(tardi.isTouching(star,1) && !playerTwo ){
       console.log("estoy tocando una estrella");
       stars[index].redraw();
-      board.scoreStars+=1;
+      scoreStars+=1;
+
     }
+    if(tardi.isTouching(star,1) && playerTwo ){
+      console.log("estoy tocando una estrella");
+      stars[index].redraw();
+      scoreStarsDos+=1;
+
+    }
+    
   })
   board.drawScorePlanets();
   board.drawScoreStars();
   board.drawTime();
   tardi.draw();
+  board.drawScorePlanets2();
+  board.drawScoreStars2();
   TimeAgotado();
+  
 }
 function pause(){
   clearInterval(intervalo);
-  intervalo = 0;
   board.music.pause();
-  
-  }
+}
 
+function reload(){
+  window.location.reload(true);
+}
 
 document.getElementById("start").addEventListener("click", start);
-document.getElementById("pause").addEventListener("click", pause);
+document.getElementById("pause").addEventListener("click", reload);
 
 
 
 addEventListener("keydown",function(e){
   if(e.keyCode === 13){
-    console.log("el enter si sirve");  
-    start();
-  }
-  
+    console.log("el enter si sirve");
+      start();
+    }
   if(e.keyCode === 82 ){
-    reStart();
+    if (allowR){
+      allowR = false;
+      reStart();
+    }
   }
-
-  if(e.keyCode === 38 && tardi.y > 9.9999 ){
+if(e.keyCode === 38 && tardi.y > 9.9999 ){
     tardi.moveUp();
     shoot.moveUp();
   }
-
-  if(e.keyCode === 40 && tardi.y < 550 ){
+if(e.keyCode === 40 && tardi.y < 550 ){
     tardi.moveDown();
     shoot.moveDown();
   }
-
-  if(e.keyCode === 37 && tardi.x > 0 ){
+if(e.keyCode === 37 && tardi.x > 0 ){
     tardi.moveLeft();
     shoot.moveLeft();
   }
-
-  if(e.keyCode === 39 && tardi.x < 300){
+if(e.keyCode === 39 && tardi.x < 300){
     tardi.moveRight();
     shoot.moveRight();
   }
-  if(e.keyCode === 32 ){
+if(e.keyCode === 32 ){
     createShoots();
-    
-   }
-   if(e.keyCode === 16 ){
-     pause();
-   }
+  }
 })
-
-
 function notificacion(){
-  ctx.font = "60px 'Press Start 2P'";
+  ctx.font = "70px 'Press Start 2P'";
   ctx.fillStyle = "yellow";
-  ctx.fillText("Tiempo Agotado", 200, 200 );
-  ctx.font = "45px 'Press Start 2P'";
-  ctx.fillText("Jugador Dos, ¡es tu turno!",20,300 );
+  ctx.fillText("Time Up", 380, 200 );
+  ctx.font = "40px 'Press Start 2P'";
+  ctx.fillText("Player 2 , ¡you're the Next!",40,300 );
   ctx.font = "30px 'Press Start 2P'";
-  ctx.fillText("Presiona 'R' para comenzar",220,400 );
+  ctx.fillText("Press 'R' to Start",350,400 );
+  resultado = true;
 }
+function notificacionWinner(){
+  
+  if(scorePlanets + scoreStars > scorePlanetsDos + scoreStarsDos ){
 
+  ctx.font = "50px 'Press Start 2P'";
+  ctx.fillStyle = "yellow";
+  ctx.fillText("¡Player 1...You Won!", 95, 300 );
+  ctx.font = "40px 'Press Start 2P'";
+  ctx.fillText("Push Reload for a New Game", 80, 350 );
+}
+  else if( scorePlanetsDos + scoreStarsDos > scorePlanets + scoreStars ){
+  ctx.font = "50px 'Press Start 2P'";
+  ctx.fillStyle = "yellow";
+  ctx.fillText("¡Player 2...You Won!", 95, 300 );
+  ctx.font = "40px 'Press Start 2P'";
+  ctx.fillText("Push Reload for a New Game", 80, 350 );
+  }
+  else if( scorePlanetsDos + scoreStarsDos === scorePlanets + scoreStars ){
+  ctx.font = "50px 'Press Start 2P'";
+  ctx.fillStyle = "yellow";
+  ctx.fillText("¡It's a Tie, Try Again!", 20, 300 );
+  ctx.font = "40px 'Press Start 2P'";
+  ctx.fillText("Push Reload for the Rematch", 60, 350 );
+  }
+}
 function TimeAgotado(){
-  if(board.time === 0 ) {
+  if(board.time === 0 && !final ) {
+    final = true;
     notificacion();
     pause();
     
+    allowR = true;
+    playerTwo = true;
+    
+  }
+  else if(board.time === 0 && resultado ){
+   
+    pause();
+    notificacionWinner();
   }
 }
-
+function start2(){
+  started = false;
+  start();
+  tardi.y = 350;
+  bullets = [];
+  board.time = 60;
+  }
 function reStart(){
-start();
+    start2();
 }
