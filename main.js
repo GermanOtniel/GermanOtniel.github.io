@@ -537,7 +537,7 @@ function update(){
           planets[indexP].redraw();
           scorePlanets+=1;
           
-        }
+        } 
       }
       if(bullet.isTouching(planet) && playerTwo ){
         bullets.splice(indexB,1);
@@ -635,6 +635,15 @@ function notificacion(){
   ctx.font = "30px 'Press Start 2P'";
   ctx.fillText("Press 'R' to Start",350,400 );
   resultado = true;
+  neptuno.x = canvas.width + widthRandom;
+  venus.x = canvas.width + widthRandom;
+  marte.x = canvas.width + widthRandom;
+  tierra.x = canvas.width + widthRandom;
+  mercurio.x = canvas.width + widthRandom;
+  star.x = canvas.width + widthRandom;
+  star2.x = canvas.width + widthRandom;
+  star3.x = canvas.width + widthRandom;
+  star4.x = canvas.width + widthRandom;
 }
 function notificacionWinner(){
   
